@@ -1,0 +1,909 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Conta pra gente — Diagnóstico de marca (teste)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,500&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --sand:#F6FAF9;
+    --sand-deep:#E7F2EF;
+    --coral:#2E8B82;
+    --coral-soft:#D2EBE6;
+    --teal:#1F5C57;
+    --teal-deep:#123A36;
+    --sun:#6FB6C9;
+    --ink:#28332F;
+    --paper:#FFFFFF;
+    --line: rgba(31,92,87,0.15);
+    --radius: 22px;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:'Plus Jakarta Sans', sans-serif;
+    background: linear-gradient(180deg, var(--sand) 0%, var(--sand-deep) 100%);
+    color:var(--ink);
+    min-height:100vh;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 28px 20px 80px;
+  }
+  h1,h2,h3{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    margin:0;
+    color:var(--teal-deep);
+  }
+  .eyebrow{
+    font-size:13px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:var(--coral);
+    font-weight:700;
+    margin-bottom:6px;
+  }
+  /* ---------- HEADER / HERO ---------- */
+  .hero{
+    text-align:center;
+    padding: 18px 0 30px;
+  }
+  .hero h1{
+    font-size: clamp(28px, 6vw, 40px);
+    line-height:1.15;
+    margin-bottom:14px;
+  }
+  .hero p{
+    font-size:16px;
+    line-height:1.6;
+    color: #4A5550;
+    max-width:520px;
+    margin: 0 auto;
+  }
+  .hero .start-btn{
+    margin-top: 26px;
+  }
+
+  /* ---------- HORIZON PROGRESS ---------- */
+  .horizon{
+    position:relative;
+    height:54px;
+    margin: 6px 0 28px;
+  }
+  .horizon-line{
+    position:absolute;
+    left:0; right:0; top:34px;
+    height:2px;
+    background: var(--line);
+    border-radius:2px;
+    overflow:hidden;
+  }
+  .horizon-line .fill{
+    height:100%;
+    background: linear-gradient(90deg, var(--sun), var(--coral));
+    width:0%;
+    transition: width .5s ease;
+  }
+  .sun{
+    position:absolute;
+    top:14px;
+    width:22px;height:22px;
+    border-radius:50%;
+    background: radial-gradient(circle at 35% 30%, #EAF7F4, var(--sun) 70%);
+    box-shadow:0 0 0 5px rgba(111,182,201,0.18);
+    transform: translateX(-50%);
+    left:0%;
+    transition: left .5s ease;
+  }
+  .horizon-label{
+    text-align:center;
+    font-size:13px;
+    color:#6b756f;
+    margin-top:8px;
+  }
+
+  /* ---------- CARD ---------- */
+  .card{
+    background: var(--paper);
+    border-radius: var(--radius);
+    padding: 30px 26px;
+    box-shadow: 0 10px 30px rgba(31,92,87,0.07);
+    border: 1px solid rgba(31,92,87,0.06);
+    display:none;
+    animation: rise .45s ease;
+  }
+  .card.active{display:block;}
+  @keyframes rise{
+    from{opacity:0; transform: translateY(14px);}
+    to{opacity:1; transform: translateY(0);}
+  }
+  .card .eyebrow{margin-bottom:4px;}
+  .card h2{
+    font-size: clamp(21px, 4vw, 26px);
+    margin-bottom: 6px;
+  }
+  .card .deck{
+    color:#5d685f;
+    font-size:14.5px;
+    margin-bottom: 22px;
+    line-height:1.5;
+  }
+
+  .field{
+    margin-bottom: 22px;
+  }
+  .field label{
+    display:block;
+    font-weight:600;
+    font-size:15px;
+    margin-bottom:8px;
+    color: var(--teal-deep);
+  }
+  .field .hint{
+    font-weight:400;
+    font-size:13px;
+    color:#7a847e;
+    display:block;
+    margin-top:3px;
+  }
+  input[type=text], input[type=tel], textarea{
+    width:100%;
+    border:1.5px solid var(--line);
+    border-radius:14px;
+    padding:13px 14px;
+    font-family:inherit;
+    font-size:15px;
+    color:var(--ink);
+    background:#FCFBF8;
+    resize:vertical;
+    transition: border-color .2s;
+  }
+  textarea{min-height:90px;}
+  input:focus, textarea:focus{
+    outline:none;
+    border-color: var(--coral);
+    background:#fff;
+  }
+
+  .input-row{
+    display:flex;
+    gap:8px;
+    align-items:flex-start;
+  }
+  .input-row textarea, .input-row input{flex:1;}
+
+  .mic-btn{
+    flex-shrink:0;
+    width:46px;height:46px;
+    border-radius:50%;
+    border:1.5px solid var(--coral-soft);
+    background: #fff;
+    color: var(--coral);
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    transition: all .2s;
+    margin-top:0;
+  }
+  .mic-btn:hover{ background: var(--coral-soft); }
+  .mic-btn.recording{
+    background: var(--coral);
+    color:#fff;
+    border-color:var(--coral);
+    animation: pulse 1.2s infinite;
+  }
+  @keyframes pulse{
+    0%{box-shadow:0 0 0 0 rgba(46,139,130,0.45);}
+    70%{box-shadow:0 0 0 10px rgba(46,139,130,0);}
+    100%{box-shadow:0 0 0 0 rgba(46,139,130,0);}
+  }
+  .mic-status{
+    font-size:12px;
+    color:var(--coral);
+    margin-top:6px;
+    display:none;
+  }
+  .mic-status.show{display:block;}
+
+  /* choice pills */
+  .pills{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+  }
+  .pill{
+    border:1.5px solid var(--line);
+    background:#FCFBF8;
+    padding:10px 16px;
+    border-radius:30px;
+    font-size:14px;
+    cursor:pointer;
+    transition: all .15s;
+    user-select:none;
+  }
+  .pill:hover{ border-color: var(--coral); }
+  .pill.selected{
+    background: var(--teal);
+    border-color: var(--teal);
+    color:#fff;
+    font-weight:600;
+  }
+
+  /* schedule grid */
+  .days{
+    display:grid;
+    grid-template-columns: repeat(auto-fill, minmax(76px,1fr));
+    gap:8px;
+    margin-bottom:14px;
+  }
+  .day-pill{
+    text-align:center;
+    border:1.5px solid var(--line);
+    border-radius:12px;
+    padding:10px 4px;
+    font-size:13px;
+    cursor:pointer;
+    background:#FCFBF8;
+  }
+  .day-pill.selected{
+    background: var(--sun);
+    border-color: var(--sun);
+    color: var(--teal-deep);
+    font-weight:700;
+  }
+
+  /* nav */
+  .nav{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-top:8px;
+  }
+  button.primary{
+    background: var(--coral);
+    color:#fff;
+    border:none;
+    padding:14px 26px;
+    border-radius:30px;
+    font-family:inherit;
+    font-weight:700;
+    font-size:15px;
+    cursor:pointer;
+    transition: transform .15s, background .2s;
+  }
+  button.primary:hover{ background:#226F67; transform: translateY(-1px); }
+  button.ghost{
+    background:none;
+    border:none;
+    color:#6b756f;
+    font-family:inherit;
+    font-size:14px;
+    font-weight:600;
+    cursor:pointer;
+    padding:10px 6px;
+  }
+  button.ghost:hover{ color: var(--teal); }
+  button:disabled{ opacity:.4; cursor:not-allowed; }
+
+  /* final / thanks */
+  .thanks{
+    text-align:center;
+    padding: 40px 10px;
+  }
+  .thanks .sunset{
+    width:90px;height:90px;
+    margin:0 auto 18px;
+    border-radius:50%;
+    background: radial-gradient(circle at 35% 30%, #EAF7F4, var(--coral) 75%);
+  }
+
+  .footer-note{
+    text-align:center;
+    font-size:12.5px;
+    color:#8b948d;
+    margin-top:30px;
+  }
+  .admin-link{
+    text-align:center;
+    margin-top:14px;
+  }
+  .admin-link a{
+    font-size:12px;
+    color:#a8b0aa;
+    text-decoration:none;
+  }
+
+  /* admin panel */
+  .admin-card{ display:none; }
+  .submission{
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:16px;
+    margin-bottom:14px;
+    background:#FCFBF8;
+  }
+  .submission h4{
+    font-family:'Fraunces',serif;
+    margin:0 0 8px;
+    color:var(--teal-deep);
+  }
+  .submission .q{ font-weight:600; font-size:13px; color:var(--teal); margin-top:10px;}
+  .submission .a{ font-size:14px; color:var(--ink); white-space:pre-wrap; }
+</style>
+</head>
+<body>
+<div class="wrap" id="app">
+
+  <!-- HERO -->
+  <div class="card active" id="card-hero">
+    <div class="hero">
+      <div class="eyebrow">Versão teste · só para quem já é nosso cliente</div>
+      <h1>Vamos te conhecer de verdade?</h1>
+      <p>Esse não é um daqueles formulários cheios de termo técnico. É uma conversa — só que por escrito (ou por áudio, se preferir 🎙️). A gente já trabalha junto, mas queremos entender ainda melhor o seu negócio, do jeitinho que ele é. Leva uns 8 a 10 minutinhos.</p>
+      <button class="primary start-btn" onclick="goTo(1)">Vamos começar →</button>
+    </div>
+  </div>
+
+  <!-- progress (hidden on hero/thanks) -->
+  <div class="horizon" id="horizon" style="display:none;">
+    <div class="horizon-line"><div class="fill" id="horizonFill"></div></div>
+    <div class="sun" id="horizonSun"></div>
+  </div>
+  <div class="horizon-label" id="horizonLabel" style="display:none;"></div>
+
+  <!-- 1. SOBRE VOCÊ -->
+  <div class="card" id="card-1">
+    <div class="eyebrow">Parte 1 de 8</div>
+    <h2>Sobre você e o seu negócio</h2>
+    <div class="deck">Nada de "missão, visão e valores". Conta a história de verdade.</div>
+
+    <div class="field">
+      <label>Qual o nome do seu negócio (ou o seu nome, se ainda não tem nome)?</label>
+      <div class="input-row">
+        <input type="text" id="q_nome_negocio" placeholder="Ex: Doces Sonhos">
+        <button class="mic-btn" onclick="toggleMic('q_nome_negocio', this)" title="Gravar resposta">🎙️</button>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Me conta a história: por que você abriu (ou quer abrir) esse negócio?
+        <span class="hint">Pode ser bem pessoal — "queria sair do CLT", "sempre foi meu sonho", "comecei vendendo pra família"... o que for verdade.</span>
+      </label>
+      <div class="input-row">
+        <textarea id="q_historia" placeholder="Escreve ou grava sua resposta aqui..."></textarea>
+        <button class="mic-btn" onclick="toggleMic('q_historia', this)" title="Gravar resposta">🎙️</button>
+      </div>
+      <div class="mic-status" id="status_q_historia">Ouvindo... fala à vontade 🎧</div>
+    </div>
+
+    <div class="field">
+      <label>Há quanto tempo o negócio existe?</label>
+      <div class="pills" data-field="q_tempo_negocio">
+        <div class="pill" onclick="selectPill(this,'q_tempo_negocio')">Ainda não abri</div>
+        <div class="pill" onclick="selectPill(this,'q_tempo_negocio')">Menos de 1 ano</div>
+        <div class="pill" onclick="selectPill(this,'q_tempo_negocio')">1 a 3 anos</div>
+        <div class="pill" onclick="selectPill(this,'q_tempo_negocio')">Mais de 3 anos</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. O QUE VOCÊ OFERECE -->
+  <div class="card" id="card-2">
+    <div class="eyebrow">Parte 2 de 8</div>
+    <h2>O que você vende ou oferece</h2>
+    <div class="deck">Sem enrolação: o que sai da sua loja/oficina/cozinha pro mundo.</div>
+
+    <div class="field">
+      <label>Em poucas palavras, o que você vende ou faz?</label>
+      <div class="input-row">
+        <textarea id="q_o_que_faz" placeholder="Ex: Vendo sorvete artesanal, gelato e açaí"></textarea>
+        <button class="mic-btn" onclick="toggleMic('q_o_que_faz', this)" title="Gravar resposta">🎙️</button>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Tem algum produto ou serviço que é o "queridinho", o carro-chefe?</label>
+      <div class="input-row">
+        <input type="text" id="q_carro_chefe" placeholder="Aquele que todo mundo pede ou recomenda">
+        <button class="mic-btn" onclick="toggleMic('q_carro_chefe', this)" title="Gravar resposta">🎙️</button>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>O que você acha que te diferencia da concorrência?
+        <span class="hint">Pode ser bem simples: "atendimento", "preço", "qualidade", "sou eu mesma que faço"...</span>
+      </label>
+      <div class="input-row">
+        <textarea id="q_diferencial" placeholder="Escreve ou grava sua resposta aqui..."></textarea>
+        <button class="mic-btn" onclick="toggleMic('q_diferencial', this)" title="Gravar resposta">🎙️</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. SEU CLIENTE -->
+  <div class="card" id="card-3">
+    <div class="eyebrow">Parte 3 de 8</div>
+    <h2>Quem é o seu cliente</h2>
+    <div class="deck">Pensa em uma pessoa de verdade que já comprou ou contratou você — não precisa ser nada elaborado.</div>
+
+    <div class="field">
+      <label>Pensa em alguém que você atendeu e adorou atender. Quem é essa pessoa? Como ela é?
+        <span class="hint">Idade aproximada, se é morador ou turista, família, sozinho(a)... o que vier à cabeça.</span>
+      </label>
+      <div class="input-row">
+        <textarea id="q_cliente_ideal" placeholder="Descreve essa pessoa..."></textarea>
+        <button class="mic-btn" onclick="toggleMic('q_cliente_ideal', this)" title="Gravar resposta">🎙️</button>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Seus clientes são mais...</label>
+      <div class="pills" data-field="q_perfil_cliente">
+        <div class="pill" onclick="selectPill(this,'q_perfil_cliente')">Moradores da cidade</div>
+        <div class="pill" onclick="selectPill(this,'q_perfil_cliente')">Turistas</div>
+        <div class="pill" onclick="selectPill(this,'q_perfil_cliente')">Um pouco dos dois</div>
+        <div class="pill" onclick="selectPill(this,'q_perfil_cliente')">Não sei dizer</div>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>O que mais te perguntam ou pedem antes de comprar?
+        <span class="hint">Tipo: preço, se entrega, se tem opção sem açúcar, horário de funcionamento...</span>
+      </label>
+      <div class="input-row">
+        <textarea id="q_duvidas_clientes" placeholder="Escreve ou grava sua resposta aqui..."></textarea>
+        <button class="mic-btn" onclick="toggleMic('q_duvidas_clientes', this)" title="Gravar resposta">🎙️</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. OBJETIVOS -->
+  <div class="card" id="card-4">
+    <div class="eyebrow">Parte 4 de 8</div>
+    <h2>O que você espera das redes sociais</h2>
+    <div class="deck">Conta na sua vida o que você espera que aconteça.</div>
+
+    <div class="field">
+      <label>Se desse super certo, o que você gostaria que o Instagram fizesse pelo seu negócio?</label>
+      <div class="pills" data-field="q_objetivo" id="pills_objetivo">
+        <div class="pill" onclick="selectPill(this,'q_objetivo')">Vender mais</div>
+        <div class="pill" onclick="selectPill(this,'q_objetivo')">Ficar mais conhecido na cidade</div>
+        <div class="pill" onclick="selectPill(this,'q_objetivo')">Atrair turistas</div>
+        <div class="pill" onclick="selectPill(this,'q_objetivo')">Parecer mais profissional</div>
+        <div class="pill" onclick="selectPill(this,'q_objetivo')">Fidelizar quem já compra</div>
+        <div class="pill" onclick="selectPill(this,'q_objetivo')">Não sei, só sei que preciso estar lá</div>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Hoje, você sabe dizer por que tem (ou quer ter) Instagram?
+        <span class="hint">Pode ser sincero(a): "todo mundo tem", "acho que ajuda a vender", "não sei direito"...</span>
+      </label>
+      <div class="input-row">
+        <textarea id="q_porque_instagram" placeholder="Escreve ou grava sua resposta aqui..."></textarea>
+        <button class="mic-btn" onclick="toggleMic('q_porque_instagram', this)" title="Gravar resposta">🎙️</button>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Tem alguma conta (de qualquer área) que você acha bonita ou que te inspira?</label>
+      <div class="input-row">
+        <input type="text" id="q_referencias" placeholder="@perfil ou nome da marca">
+        <button class="mic-btn" onclick="toggleMic('q_referencias', this)" title="Gravar resposta">🎙️</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. O QUE JÁ EXISTE -->
+  <div class="card" id="card-5">
+    <div class="eyebrow">Parte 5 de 8</div>
+    <h2>Sobre o que já existe</h2>
+    <div class="deck">Já trabalhamos juntos, então essa parte é só pra gente acertar o que pode melhorar.</div>
+
+    <div class="field">
+      <label>O que você sente que está funcionando bem no seu Instagram hoje?</label>
+      <div class="input-row">
+        <textarea id="q_funciona_bem" placeholder="Escreve ou grava sua resposta aqui..."></textarea>
+        <button class="mic-btn" onclick="toggleMic('q_funciona_bem', this)" title="Gravar resposta">🎙️</button>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>E o que você sente que podia melhorar ou que está faltando?</label>
+      <div class="input-row">
+        <textarea id="q_pode_melhorar" placeholder="Pode ser sincero(a), é pra isso que estamos aqui :)"></textarea>
+        <button class="mic-btn" onclick="toggleMic('q_pode_melhorar', this)" title="Gravar resposta">🎙️</button>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Tem alguma data, época do ano ou evento importante pro seu negócio que a gente não pode esquecer?
+        <span class="hint">Ex: alta temporada, datas comemorativas, aniversário da loja...</span>
+      </label>
+      <div class="input-row">
+        <textarea id="q_datas_importantes" placeholder="Escreve ou grava sua resposta aqui..."></textarea>
+        <button class="mic-btn" onclick="toggleMic('q_datas_importantes', this)" title="Gravar resposta">🎙️</button>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Tem alguma palavra, imagem ou assunto que você NÃO quer que apareça no seu conteúdo?</label>
+      <div class="input-row">
+        <textarea id="q_evitar" placeholder="Pode ser bem específico, sem problema"></textarea>
+        <button class="mic-btn" onclick="toggleMic('q_evitar', this)" title="Gravar resposta">🎙️</button>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Além de você, mais alguém participa das decisões sobre o conteúdo?</label>
+      <div class="pills" data-field="q_quem_decide">
+        <div class="pill" onclick="selectPill(this,'q_quem_decide')">Só eu</div>
+        <div class="pill" onclick="selectPill(this,'q_quem_decide')">Sócio(a)</div>
+        <div class="pill" onclick="selectPill(this,'q_quem_decide')">Família</div>
+        <div class="pill" onclick="selectPill(this,'q_quem_decide')">Equipe/funcionários</div>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Você já tem fotos e vídeos prontos pra usar, ou normalmente precisa gravar no local?</label>
+      <div class="pills" data-field="q_material_disponivel">
+        <div class="pill" onclick="selectPill(this,'q_material_disponivel')">Tenho bastante material</div>
+        <div class="pill" onclick="selectPill(this,'q_material_disponivel')">Tenho pouco</div>
+        <div class="pill" onclick="selectPill(this,'q_material_disponivel')">Não tenho nada, precisa gravar</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. VISUAL -->
+  <div class="card" id="card-6">
+    <div class="eyebrow">Parte 6 de 8</div>
+    <h2>A cara da sua marca</h2>
+    <div class="deck">Não precisa saber de design. Só precisa saber o que combina com você.</div>
+
+    <div class="field">
+      <label>Se sua marca fosse uma pessoa, como ela seria?
+        <span class="hint">Divertida, elegante, simples, agitada, tranquila, família...</span>
+      </label>
+      <div class="input-row">
+        <textarea id="q_personalidade_marca" placeholder="Escreve ou grava sua resposta aqui..."></textarea>
+        <button class="mic-btn" onclick="toggleMic('q_personalidade_marca', this)" title="Gravar resposta">🎙️</button>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Tem alguma cor (ou cores) que você ama ou que já usa no seu negócio?</label>
+      <div class="input-row">
+        <input type="text" id="q_cores" placeholder="Ex: tons de rosa e dourado">
+        <button class="mic-btn" onclick="toggleMic('q_cores', this)" title="Gravar resposta">🎙️</button>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Já tem logo, fotos profissionais ou identidade visual pronta?</label>
+      <div class="pills" data-field="q_material_pronto">
+        <div class="pill" onclick="selectPill(this,'q_material_pronto')">Tenho tudo</div>
+        <div class="pill" onclick="selectPill(this,'q_material_pronto')">Tenho só logo</div>
+        <div class="pill" onclick="selectPill(this,'q_material_pronto')">Tenho só fotos soltas</div>
+        <div class="pill" onclick="selectPill(this,'q_material_pronto')">Não tenho nada ainda</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 7. ROTINA -->
+  <div class="card" id="card-7">
+    <div class="eyebrow">Parte 7 de 8</div>
+    <h2>Sua rotina (a parte mais importante!)</h2>
+    <div class="deck">Sabemos como é tocar um negócio sozinho(a). Isso aqui é pra gente se encaixar na sua vida, não o contrário.</div>
+
+    <div class="field">
+      <label>Em quais dias você consegue dar uma olhada e aprovar conteúdo?</label>
+      <div class="days" id="dias_disponiveis">
+        <div class="day-pill" onclick="toggleDay(this)">Seg</div>
+        <div class="day-pill" onclick="toggleDay(this)">Ter</div>
+        <div class="day-pill" onclick="toggleDay(this)">Qua</div>
+        <div class="day-pill" onclick="toggleDay(this)">Qui</div>
+        <div class="day-pill" onclick="toggleDay(this)">Sex</div>
+        <div class="day-pill" onclick="toggleDay(this)">Sáb</div>
+        <div class="day-pill" onclick="toggleDay(this)">Dom</div>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>E em qual horário você costuma estar mais disponível?</label>
+      <div class="pills" data-field="q_horario">
+        <div class="pill" onclick="selectPill(this,'q_horario')">Manhã cedo</div>
+        <div class="pill" onclick="selectPill(this,'q_horario')">Fim de manhã</div>
+        <div class="pill" onclick="selectPill(this,'q_horario')">Tarde</div>
+        <div class="pill" onclick="selectPill(this,'q_horario')">Fim do dia / noite</div>
+        <div class="pill" onclick="selectPill(this,'q_horario')">Varia muito, sem horário fixo</div>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Qual o melhor jeito de falar com você no dia a dia?</label>
+      <div class="pills" data-field="q_canal_contato">
+        <div class="pill" onclick="selectPill(this,'q_canal_contato')">WhatsApp</div>
+        <div class="pill" onclick="selectPill(this,'q_canal_contato')">Ligação</div>
+        <div class="pill" onclick="selectPill(this,'q_canal_contato')">Instagram direct</div>
+        <div class="pill" onclick="selectPill(this,'q_canal_contato')">Pessoalmente</div>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Tem algum dia ou período que é impossível te procurar? (tipo alta temporada, fim de semana, etc.)</label>
+      <div class="input-row">
+        <input type="text" id="q_indisponibilidade" placeholder="Ex: janeiro é correria total">
+        <button class="mic-btn" onclick="toggleMic('q_indisponibilidade', this)" title="Gravar resposta">🎙️</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 8. LIVRE -->
+  <div class="card" id="card-8">
+    <div class="eyebrow">Parte 8 de 8 — última!</div>
+    <h2>Mais alguma coisa?</h2>
+    <div class="deck">Esse espaço é seu. Desabafa, sonha alto, ou só conta o que achar importante.</div>
+
+    <div class="field">
+      <label>Tem algo que você sempre quis num conteúdo seu, mas nunca pediu por achar bobeira? Agora é a hora.</label>
+      <div class="input-row">
+        <textarea id="q_sonho" placeholder="Pode falar à vontade, sem julgamento 💛"></textarea>
+        <button class="mic-btn" onclick="toggleMic('q_sonho', this)" title="Gravar resposta">🎙️</button>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Seu nome (e o do seu negócio, se for diferente)</label>
+      <input type="text" id="q_nome_contato" placeholder="Pra gente saber quem está respondendo :)">
+    </div>
+
+    <div class="field">
+      <label>WhatsApp para contato</label>
+      <input type="tel" id="q_whatsapp" placeholder="(12) 9XXXX-XXXX">
+    </div>
+  </div>
+
+  <!-- NAV -->
+  <div class="nav" id="navBar" style="display:none;">
+    <button class="ghost" id="btnBack" onclick="prevCard()">← Voltar</button>
+    <button class="primary" id="btnNext" onclick="nextCard()">Próximo →</button>
+  </div>
+
+  <!-- THANKS -->
+  <div class="card" id="card-thanks">
+    <div class="thanks">
+      <div class="sunset"></div>
+      <h2>Recebido com carinho! 💛</h2>
+      <p style="color:#5d685f; margin-top:10px; line-height:1.6;">Obrigada por se abrir com a gente. Isso vai direto pro planejamento da sua marca — sem fórmula pronta, do seu jeito mesmo. Qualquer coisa, já sabe onde nos achar.</p>
+    </div>
+  </div>
+
+  <div class="footer-note">Formulário em fase de teste 🌊 obrigada por participar!</div>
+
+</div>
+
+<!-- Formulário oculto só para o Netlify detectar os campos -->
+<form id="form-real" action="https://formspree.io/f/https://formspree.io/f/mnjkapjl" method="POST" style="display:none;">
+  <input type="text" name="q_nome_negocio" />
+  <input type="text" name="q_historia" />
+  <input type="text" name="q_tempo_negocio" />
+  <input type="text" name="q_o_que_faz" />
+  <input type="text" name="q_carro_chefe" />
+  <input type="text" name="q_diferencial" />
+  <input type="text" name="q_cliente_ideal" />
+  <input type="text" name="q_perfil_cliente" />
+  <input type="text" name="q_duvidas_clientes" />
+  <input type="text" name="q_objetivo" />
+  <input type="text" name="q_porque_instagram" />
+  <input type="text" name="q_referencias" />
+  <input type="text" name="q_funciona_bem" />
+  <input type="text" name="q_pode_melhorar" />
+  <input type="text" name="q_datas_importantes" />
+  <input type="text" name="q_evitar" />
+  <input type="text" name="q_quem_decide" />
+  <input type="text" name="q_material_disponivel" />
+  <input type="text" name="q_personalidade_marca" />
+  <input type="text" name="q_cores" />
+  <input type="text" name="q_material_pronto" />
+  <input type="text" name="q_dias_disponiveis" />
+  <input type="text" name="q_horario" />
+  <input type="text" name="q_canal_contato" />
+  <input type="text" name="q_indisponibilidade" />
+  <input type="text" name="q_sonho" />
+  <input type="text" name="q_nome_contato" />
+  <input type="text" name="q_whatsapp" />
+  <input name="bot-field" />
+</form>
+
+<script>
+const TOTAL_STEPS = 8;
+let current = 0; // 0 = hero
+const answers = {};
+const selections = {}; // for pills
+const selectedDays = [];
+
+const fieldKeys = [
+  'q_nome_negocio','q_historia','q_tempo_negocio',
+  'q_o_que_faz','q_carro_chefe','q_diferencial',
+  'q_cliente_ideal','q_perfil_cliente','q_duvidas_clientes',
+  'q_objetivo','q_porque_instagram','q_referencias',
+  'q_funciona_bem','q_pode_melhorar','q_datas_importantes','q_evitar','q_quem_decide','q_material_disponivel',
+  'q_personalidade_marca','q_cores','q_material_pronto',
+  'q_horario','q_canal_contato','q_indisponibilidade',
+  'q_sonho','q_nome_contato','q_whatsapp'
+];
+
+function goTo(step){
+  document.querySelectorAll('.card').forEach(c=>c.classList.remove('active'));
+  if(step===0){
+    document.getElementById('card-hero').classList.add('active');
+    document.getElementById('horizon').style.display='none';
+    document.getElementById('horizonLabel').style.display='none';
+    document.getElementById('navBar').style.display='none';
+  } else if(step > TOTAL_STEPS){
+    document.getElementById('card-thanks').classList.add('active');
+    document.getElementById('horizon').style.display='none';
+    document.getElementById('horizonLabel').style.display='none';
+    document.getElementById('navBar').style.display='none';
+  } else {
+    document.getElementById('card-'+step).classList.add('active');
+    document.getElementById('horizon').style.display='block';
+    document.getElementById('horizonLabel').style.display='block';
+    document.getElementById('navBar').style.display='flex';
+    const pct = (step-1)/(TOTAL_STEPS-1)*100;
+    document.getElementById('horizonFill').style.width = pct+'%';
+    document.getElementById('horizonSun').style.left = pct+'%';
+    document.getElementById('horizonLabel').textContent = 'Parte '+step+' de '+TOTAL_STEPS;
+    document.getElementById('btnBack').style.visibility = step===1 ? 'hidden':'visible';
+    document.getElementById('btnNext').textContent = step===TOTAL_STEPS ? 'Enviar respostas →' : 'Próximo →';
+  }
+  current = step;
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+function saveCurrentCard(){
+  fieldKeys.forEach(k=>{
+    const el = document.getElementById(k);
+    if(el) answers[k] = el.value;
+  });
+  Object.keys(selections).forEach(k=> answers[k] = selections[k]);
+  answers['q_dias_disponiveis'] = selectedDays.join(', ');
+}
+
+function nextCard(){
+  saveCurrentCard();
+  if(current === TOTAL_STEPS){
+    submitForm();
+    return;
+  }
+  goTo(current+1);
+}
+function prevCard(){
+  if(current>1) goTo(current-1);
+}
+
+function selectPill(el, field){
+  const siblings = el.parentElement.querySelectorAll('.pill');
+  siblings.forEach(s=>s.classList.remove('selected'));
+  el.classList.add('selected');
+  selections[field] = el.textContent;
+}
+
+function toggleDay(el){
+  el.classList.toggle('selected');
+  const day = el.textContent;
+  const idx = selectedDays.indexOf(day);
+  if(idx>-1){ selectedDays.splice(idx,1); } else { selectedDays.push(day); }
+}
+
+/* ---------- VOICE TRANSCRIPTION ---------- */
+let recognition = null;
+let activeField = null;
+let activeBtn = null;
+
+function getRecognition(){
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if(!SR) return null;
+  const r = new SR();
+  r.lang = 'pt-BR';
+  r.continuous = true;
+  r.interimResults = true;
+  return r;
+}
+
+function toggleMic(fieldId, btn){
+  const SRSupported = !!(window.SpeechRecognition || window.webkitSpeechRecognition);
+  if(!SRSupported){
+    alert('Seu navegador não suporta gravação por voz ainda. Pode digitar normalmente :)');
+    return;
+  }
+  if(activeBtn === btn){
+    stopMic();
+    return;
+  }
+  if(activeBtn){ stopMic(); }
+
+  activeField = document.getElementById(fieldId);
+  activeBtn = btn;
+  const statusEl = document.getElementById('status_'+fieldId);
+
+  recognition = getRecognition();
+  let baseText = activeField.value ? activeField.value + ' ' : '';
+
+  recognition.onresult = function(event){
+    let interim = '';
+    let final = '';
+    for(let i=event.resultIndex; i<event.results.length; i++){
+      const t = event.results[i][0].transcript;
+      if(event.results[i].isFinal){ final += t + ' '; } else { interim += t; }
+    }
+    if(final){ baseText += final; }
+    activeField.value = baseText + interim;
+  };
+  recognition.onerror = function(){ stopMic(); };
+  recognition.onend = function(){
+    if(activeBtn===btn){ stopMic(); }
+  };
+
+  recognition.start();
+  btn.classList.add('recording');
+  btn.textContent = '⏹️';
+  if(statusEl) statusEl.classList.add('show');
+}
+
+function stopMic(){
+  if(recognition){ try{ recognition.stop(); }catch(e){} }
+  if(activeBtn){
+    activeBtn.classList.remove('recording');
+    activeBtn.textContent = '🎙️';
+  }
+  document.querySelectorAll('.mic-status').forEach(s=>s.classList.remove('show'));
+  recognition = null;
+  activeBtn = null;
+  activeField = null;
+}
+
+/* ---------- SUBMIT (Netlify Forms) ---------- */
+function encodeFormData(data){
+  return Object.keys(data)
+    .map(k => encodeURIComponent(k) + '=' + encodeURIComponent(data[k] ?? ''))
+    .join('&');
+}
+
+/* ---------- SUBMIT (Via Formspree) ---------- */
+async function submitForm(){
+  saveCurrentCard();
+  
+  // Pegamos o formulário que renomeamos no HTML
+  const form = document.getElementById('form-real');
+  
+  // Preenchemos os campos invisíveis com as respostas que o usuário deu
+  for (let key in answers) {
+    let input = form.querySelector(`[name="${key}"]`);
+    if (input) input.value = answers[key];
+  }
+
+  // Enviamos para o Formspree
+  try{
+    await fetch(form.action, {
+      method: 'POST',
+      body: new FormData(form),
+      headers: { 'Accept': 'application/json' }
+    });
+    // Se deu tudo certo, levamos para a tela de obrigado
+    goTo(TOTAL_STEPS+1);
+  } catch(e){
+    alert('Ops, houve um erro ao enviar. Tente novamente!');
+    console.error('Erro ao enviar', e);
+  }
+}
+
+</script>
+</body>
+</html>
